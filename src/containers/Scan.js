@@ -43,7 +43,7 @@ const Scan = () => {
                     setMessage(textDecoder.decode(record.data));
                     break;
                 case "gsv/materiel":
-                    const textDecoder2 = new TextDecoder(record.encoding);
+                    //const textDecoder2 = new TextDecoder(record.encoding);
                     setMessage('TEST');
                     break;
                 default:
