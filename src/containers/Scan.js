@@ -42,9 +42,9 @@ const Scan = () => {
                     //const textDecoder = new TextDecoder(record.encoding);
                     setMessage('Test 2');
                     break;
-                case "gsv/materiel":
+                case "mime":
                     //const textDecoder2 = new TextDecoder(record.encoding);
-                    setMessage('TEST');
+                    setMessage(record.mediaType);
                     break;
                 default:
                     //const textDecoder = new TextDecoder(record.encoding);
