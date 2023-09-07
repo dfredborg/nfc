@@ -47,7 +47,8 @@ const Scan = () => {
                     setMessage('TEST');
                     break;
                 default:
-                // TODO: Handle other records with record data.
+                    setMessage('TEST 3');
+                    break;
             }
         }
     };
