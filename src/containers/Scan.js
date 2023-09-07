@@ -43,7 +43,6 @@ const Scan = () => {
                     setMessage('Test 2');
                     break;
                 case "mime":
-                    const textDecoder = new TextDecoder();
                     setMessage(JSON.parse(decoder.decode(record.data)));
                     break;
                 default:
