@@ -44,7 +44,7 @@ const Scan = () => {
                     break;
                 case "mime":
                     //const textDecoder2 = new TextDecoder(record.encoding);
-                    setMessage(record.mediaType);
+                    setMessage(record.payload);
                     break;
                 default:
                     //const textDecoder = new TextDecoder(record.encoding);
