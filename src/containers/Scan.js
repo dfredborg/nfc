@@ -42,12 +42,12 @@ const Scan = () => {
                 case "text":                    
                     setMessage(textDecoder.decode(record.data));
                     break;
-                case "url":
-                    setMessage(textDecoder.decode(record.data));
-                    break;
-                default:
-                    setMessage(textDecoder.decode(record.data));
-                    break;
+                    case "gsv/materiel":
+                        const textDecoder2 = new TextDecoder(record.encoding);
+                        setMessage(textDecoder2.decode(record.data));
+                        break;
+                    default:
+                        // TODO: Handle other records with record data.
                 }
         }
     };
