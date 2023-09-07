@@ -39,8 +39,8 @@ const Scan = () => {
         for (const record of message.records) {
             switch (record.recordType) {
                 case "text":
-                    const textDecoder = new TextDecoder(record.encoding);
-                    setMessage(textDecoder.decode(record.data));
+                    //const textDecoder = new TextDecoder(record.encoding);
+                    setMessage('Test 2');
                     break;
                 case "gsv/materiel":
                     //const textDecoder2 = new TextDecoder(record.encoding);
