@@ -44,7 +44,7 @@ const Scan = () => {
                     break;
                 case "gsv/materiel":
                     const textDecoder2 = new TextDecoder(record.encoding);
-                    setMessage(textDecoder2.decode(record));
+                    setMessage('TEST');
                     break;
                 default:
                 // TODO: Handle other records with record data.
