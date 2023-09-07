@@ -47,7 +47,7 @@ const Scan = () => {
                     setMessage('TEST');
                     break;
                 default:
-                    setMessage('TEST 3');
+                    setMessage(record);
                     break;
             }
         }
