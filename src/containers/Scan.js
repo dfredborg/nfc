@@ -48,7 +48,7 @@ const Scan = () => {
                     break;
                 default:
                     const textDecoder = new TextDecoder(record.encoding);
-                    setMessage(textDecoder.decode(record.data));
+                    setMessage(record.data);
                     break;
             }
         }
