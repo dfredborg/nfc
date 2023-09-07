@@ -37,9 +37,9 @@ const Scan = () => {
     const onReading = ({message, serialNumber}) => {
         setSerialNumber(serialNumber);
         for (const record of message.records) {
+            const textDecoder = new TextDecoder(record.encoding);
             switch (record.recordType) {
-                case "text":
-                    const textDecoder = new TextDecoder(record.encoding);
+                case "text":                    
                     setMessage(textDecoder.decode(record.data));
                     break;
                 case "url":
@@ -47,6 +47,7 @@ const Scan = () => {
                     break;
                 default:
                     setMessage(textDecoder.decode(record.data));
+                    break;
                 }
         }
     };
