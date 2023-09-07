@@ -43,10 +43,10 @@ const Scan = () => {
                     setMessage(textDecoder.decode(record.data));
                     break;
                 case "url":
-                    // TODO: Read URL record with record data.
+                    setMessage(textDecoder.decode(record.data));
                     break;
                 default:
-                    // TODO: Handle other records with record data.
+                    setMessage(textDecoder.decode(record.data));
                 }
         }
     };
