@@ -46,7 +46,7 @@ const Scan = () => {
                     const requestData = {
                         recordType: record.recordType,
                         data: JSON.parse(decoder.decode(record.data)),
-                      };
+                    };
                     // Make the POST request
                     try {
                         const response = await fetch(apiUrl, {
@@ -77,24 +77,24 @@ const Scan = () => {
         scan();
     }, [scan]);
 
-    return (        
+    return (
         <>
-        <iframe
-        src='https://apps.powerapps.com/play/e/default-e15ec559-2613-43b3-90ec-9c684104b30d/a/5fc3b331-fa84-4c10-aa75-9cd2590ae54c?tenantId=e15ec559-2613-43b3-90ec-9c684104b30d&hint=f92488d5-cde3-49a9-89c4-5f044211ab7c&sourcetime=1694160116740&source=portal&parameter1='message
-        width="800"
-        height="600"
-        frameBorder="0"
-        allowFullScreen="true"
-        id="PowerApp"
-        title="Power App"
-      />
+            <iframe
+                src={`https://apps.powerapps.com/play/e/default-e15ec559-2613-43b3-90ec-9c684104b30d/a/5fc3b331-fa84-4c10-aa75-9cd2590ae54c?tenantId=e15ec559-2613-43b3-90ec-9c684104b30d&hint=f92488d5-cde3-49a9-89c4-5f044211ab7c&sourcetime=1694160116740&source=portal&parameter1=${message}`}
+                width="800"
+                height="600"
+                frameBorder="0"
+                allowFullScreen="true"
+                id="PowerApp"
+                title="Power App"
+            />
             {actions.scan === 'scanned' ? (
                 <div>
                     <p>Serial Number: {serialNumber}</p>
                     <p>Message: {message}</p>
                 </div>
             ) : (
-                <Scanner status={actions.scan}></Scanner>
+                <Scanner status={actions.scan} />
             )}
         </>
     );
