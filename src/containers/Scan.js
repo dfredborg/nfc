@@ -8,11 +8,6 @@ const Scan = () => {
     const { actions, setActions } = useContext(ActionsContext);
     const apiUrl = 'https://prod-188.westeurope.logic.azure.com:443/workflows/dfb68ad2b62b4cd8a64fb879c2892fea/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=FlH2bom_cydDIIr0n8qpbcYXcBRpSH-UdkUbUgpov-Q'; // Replace with your actual API URL
 
-    const requestData = {
-      key1: 'value1',
-      key2: 'value2',
-    };
-
     const scan = useCallback(async () => {
         if ('NDEFReader' in window) {
             try {
@@ -48,7 +43,10 @@ const Scan = () => {
                 case "mime":
                     const decoder = new TextDecoder();
                     setMessage(JSON.parse(decoder.decode(record.data)));
-
+                    const requestData = {
+                        recordType: record.recordType,
+                        data: JSON.parse(decoder.decode(record.data)),
+                      };
                     // Make the POST request
                     try {
                         const response = await fetch(apiUrl, {
