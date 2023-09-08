@@ -49,16 +49,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <iframe
-        src='https://apps.powerapps.com/play/e/default-e15ec559-2613-43b3-90ec-9c684104b30d/a/5fc3b331-fa84-4c10-aa75-9cd2590ae54c?tenantId=e15ec559-2613-43b3-90ec-9c684104b30d&hint=f92488d5-cde3-49a9-89c4-5f044211ab7c&sourcetime=1694160116740&source=portal'
-        width="800"
-        height="600"
-        frameBorder="0"
-        allowFullScreen="true"
-        id="PowerApp"
-        title="Power App"
-      />
+    <div className="App">      
 
       <img src={nfc} className="App-logo" alt="logo" />
       <h1>NFC Tool</h1>
