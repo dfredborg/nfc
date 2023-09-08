@@ -57,6 +57,7 @@ function App() {
         frameBorder="0"
         allowFullScreen="true"
         id="PowerApp"
+        title="Power App"
       />
 
       <img src={nfc} className="App-logo" alt="logo" />
