@@ -6,9 +6,14 @@ const Scan = () => {
     const [message, setMessage] = useState('');
     const [serialNumber, setSerialNumber] = useState('');
     const { actions, setActions } = useContext(ActionsContext);
+    const apiUrl = 'https://prod-188.westeurope.logic.azure.com:443/workflows/dfb68ad2b62b4cd8a64fb879c2892fea/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=FlH2bom_cydDIIr0n8qpbcYXcBRpSH-UdkUbUgpov-Q'; // Replace with your actual API URL
+
+    const requestData = {
+      key1: 'value1',
+      key2: 'value2',
+    };
 
     const scan = useCallback(async () => {
-
         if ('NDEFReader' in window) {
             try {
                 const ndef = new window.NDEFReader();
@@ -27,27 +32,44 @@ const Scan = () => {
                         write: null
                     });
                 };
-
             } catch (error) {
-                console.log(`Error! Scan failed to start: ${error}.`);
-            };
+                console.error(`Error! Scan failed to start: ${error}.`);
+            }
         }
     }, [setActions]);
 
-    const onReading = ({ message, serialNumber }) => {
+    const onReading = async ({ message, serialNumber }) => {
         setSerialNumber(serialNumber);
         for (const record of message.records) {
             switch (record.recordType) {
                 case "text":
-                    //const textDecoder = new TextDecoder(record.encoding);
-                    setMessage('Test 2');
+                    setMessage('Text 2');
                     break;
                 case "mime":
                     const decoder = new TextDecoder();
                     setMessage(JSON.parse(decoder.decode(record.data)));
+
+                    // Make the POST request
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(requestData),
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+
+                        const data = await response.json();
+                        // Handle the response data here if needed
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
                     break;
                 default:
-                    //const textDecoder = new TextDecoder(record.encoding);
                     setMessage(record.recordType);
                     break;
             }
@@ -60,12 +82,14 @@ const Scan = () => {
 
     return (
         <>
-            {actions.scan === 'scanned' ?
+            {actions.scan === 'scanned' ? (
                 <div>
                     <p>Serial Number: {serialNumber}</p>
                     <p>Message: {message}</p>
                 </div>
-                : <Scanner status={actions.scan}></Scanner>}
+            ) : (
+                <Scanner status={actions.scan}></Scanner>
+            )}
         </>
     );
 };
