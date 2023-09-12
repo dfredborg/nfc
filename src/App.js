@@ -1,5 +1,3 @@
-// App.js
-
 import React, { useState, useEffect } from 'react';
 import nfc from './nfc.svg';
 import './App.css';
@@ -9,7 +7,8 @@ import { ActionsContext } from './contexts/context';
 
 function App() {
   const [actions, setActions] = useState(null);
-  const [apiResponse, setApiResponse] = useState(null); // State to store API response
+  // Remove the unused apiResponse variable
+  // const [apiResponse, setApiResponse] = useState(null); // State to store API response
   const { scan, write } = actions || {};
 
   const actionsValue = { actions, setActions };
@@ -38,8 +37,9 @@ function App() {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const data = await response.json();
-      setApiResponse(data); // Store the API response in state
+      // Remove the unused apiResponse variable
+      // const data = await response.json();
+      // setApiResponse(data); // Store the API response in state
     } catch (error) {
       console.error('Error:', error);
     }
