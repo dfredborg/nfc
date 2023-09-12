@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Scan = () => {
   const [message, setMessage] = useState('');
@@ -48,30 +48,30 @@ const Scan = () => {
     }
   };
 
-  const scan = useCallback(async () => {
-    if ('NDEFReader' in window) {
-      try {
-        const ndef = new window.NDEFReader();
-        await ndef.scan();
-
-        console.log("Scan started successfully.");
-        ndef.onreadingerror = () => {
-          console.log("Cannot read data from the NFC tag. Try another one?");
-        };
-
-        ndef.onreading = event => {
-          console.log("NDEF message read.");
-          onReading(event);
-        };
-      } catch (error) {
-        console.error(`Error! Scan failed to start: ${error}.`);
-      }
-    }
-  }, []);
-
   useEffect(() => {
+    const scan = async () => {
+      if ('NDEFReader' in window) {
+        try {
+          const ndef = new window.NDEFReader();
+          await ndef.scan();
+
+          console.log("Scan started successfully.");
+          ndef.onreadingerror = () => {
+            console.log("Cannot read data from the NFC tag. Try another one?");
+          };
+
+          ndef.onreading = event => {
+            console.log("NDEF message read.");
+            onReading(event);
+          };
+        } catch (error) {
+          console.error(`Error! Scan failed to start: ${error}.`);
+        }
+      }
+    };
+
     scan();
-  }, [scan]);
+  }, []);
 
   return (
     <>            

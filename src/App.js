@@ -1,3 +1,5 @@
+// App.js
+
 import React, { useState, useEffect } from 'react';
 import nfc from './nfc.svg';
 import './App.css';
@@ -7,8 +9,7 @@ import { ActionsContext } from './contexts/context';
 
 function App() {
   const [actions, setActions] = useState(null);
-  // Remove the unused apiResponse variable
-  // const [apiResponse, setApiResponse] = useState(null); // State to store API response
+  const [iframeSrc, setIframeSrc] = useState(''); // State to store iframe URL
   const { scan, write } = actions || {};
 
   const actionsValue = { actions, setActions };
@@ -17,10 +18,15 @@ function App() {
     setActions({ ...actions });
   };
 
+  // Function to set the iframe URL
+  const setIframeUrl = (newUrl) => {
+    setIframeSrc(newUrl);
+  };
+
   // Function to call the REST API with a POST request
   const callRestApi = async () => {
     try {
-      const apiUrl = 'https://prod-188.westeurope.logic.azure.com:443/workflows/dfb68ad2b62b4cd8a64fb879c2892fea/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=FlH2bom_cydDIIr0n8qpbcYXcBRpSH-UdkUbUgpov-Q'; // Replace with your API URL
+      const apiUrl = '...'; // Replace with your API URL
       const requestData = {
         id: 'TESTID'
       };
@@ -52,7 +58,6 @@ function App() {
 
   return (
     <div className="App">      
-
       <img src={nfc} className="App-logo" alt="logo" />
       <h1>NFC Tool</h1>
       <div className="App-container">
@@ -68,7 +73,7 @@ function App() {
         </button>
       </div>
       <ActionsContext.Provider value={actionsValue}>
-        {scan && <Scan />}
+        {scan && <Scan setIframeUrl={setIframeUrl} />}
         {write && <Write />}
       </ActionsContext.Provider>
      
@@ -78,7 +83,7 @@ function App() {
         width="100%"
         height="640px"
         frameBorder="0"
-        src={`https://apps.powerapps.com/play/5fc3b331-fa84-4c10-aa75-9cd2590ae54c?source=iframe${scan && scan.message ? `&parameter1=${encodeURIComponent(scan.message)}` : ''}`}
+        src={iframeSrc}
         allowFullScreen
         allow="geolocation; microphone; camera"        
       ></iframe>
