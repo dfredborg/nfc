@@ -1,3 +1,5 @@
+// App.js
+
 import React, { useState, useEffect } from 'react';
 import nfc from './nfc.svg';
 import './App.css';
@@ -69,20 +71,14 @@ function App() {
         {scan && <Scan />}
         {write && <Write />}
       </ActionsContext.Provider>
-      {/* Display API response */}
-      {apiResponse && (
-        <div className="Api-response">
-          <h2>API Response</h2>
-          <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
-        </div>
-      )}
+     
       {/* Add the iframe here */}
       <iframe
         title="PowerApps"
         width="100%"
         height="640px"
         frameBorder="0"
-        src="https://apps.powerapps.com/play/5fc3b331-fa84-4c10-aa75-9cd2590ae54c?source=iframe"
+        src={`https://apps.powerapps.com/play/5fc3b331-fa84-4c10-aa75-9cd2590ae54c?source=iframe${scan && scan.message ? `&parameter1=${encodeURIComponent(scan.message)}` : ''}`}
         allowFullScreen
         allow="geolocation; microphone; camera"        
       ></iframe>
