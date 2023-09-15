@@ -1,5 +1,3 @@
-// App.js
-
 import React, { useState, useEffect } from 'react';
 import nfc from './nfc.svg';
 import './App.css';
@@ -9,7 +7,7 @@ import { ActionsContext } from './contexts/context';
 
 function App() {
   const [actions, setActions] = useState(null);
-  const [iframeSrc, setIframeSrc] = useState('https://apps.powerapps.com/play/5fc3b331-fa84-4c10-aa75-9cd2590ae54c?source=iframe'); // State to store iframe URL
+  const [iframeSrc] = useState('https://apps.powerapps.com/play/5fc3b331-fa84-4c10-aa75-9cd2590ae54c?source=iframe'); // State to store iframe URL
   const { scan, write } = actions || {};
 
   const actionsValue = { actions, setActions };
@@ -18,43 +16,16 @@ function App() {
     setActions({ ...actions });
   };
 
-  // Function to set the iframe URL
-  const setIframeUrl = (newUrl) => {
-    setIframeSrc(newUrl);
-  };
-
-  // Function to call the REST API with a POST request
-  const callRestApi = async () => {
-    try {
-      const apiUrl = '...'; // Replace with your API URL
-      const requestData = {
-        id: 'TESTID'
-      };
-
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      // Remove the unused apiResponse variable
-      // const data = await response.json();
-      // setApiResponse(data); // Store the API response in state
-    } catch (error) {
-      console.error('Error:', error);
+  // Function to send a sample message to the PCF control inside the iframe
+  const sendMessageToPCF = () => {
+    const iframeElement = document.querySelector('iframe');
+    if (iframeElement && iframeElement.contentWindow) {
+      const sampleData = { tagid: "SampleTagID12345" };
+      iframeElement.contentWindow.postMessage(sampleData, '*'); // Adjust the target origin as needed
     }
   };
 
-  // useEffect to call the API when the component mounts (you can trigger this differently as needed)
-  useEffect(() => {
-    callRestApi();
-  }, []);
+  // ... [rest of the code remains unchanged]
 
   return (
     <div className="App">      
@@ -68,12 +39,13 @@ function App() {
           Write
         </button>
         {/* Button to trigger the REST API call */}
-        <button onClick={callRestApi} className="btn">
-          Call API (POST)
+        {/* Button to send a sample message to the PCF control */}
+        <button onClick={sendMessageToPCF} className="btn">
+          Send Sample Data to PCF
         </button>
       </div>
       <ActionsContext.Provider value={actionsValue}>
-        {scan && <Scan setIframeUrl={setIframeUrl} />}
+        {scan && <Scan />}
         {write && <Write />}
       </ActionsContext.Provider>
      
