@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 const Scan = () => {
   const [message, setMessage] = useState('');
-  const apiUrl = 'https://prod-188.westeurope.logic.azure.com:443/workflows/dfb68ad2b62b4cd8a64fb879c2892fea/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=FlH2bom_cydDIIr0n8qpbcYXcBRpSH-UdkUbUgpov-Q'; // Replace with your actual API URL
 
   const onReading = async ({ message }) => {
     for (const record of message.records) {
@@ -12,34 +11,17 @@ const Scan = () => {
           break;
         case "mime":
           const decoder = new TextDecoder();
-          setMessage(JSON.parse(decoder.decode(record.data)));
-          const requestData = {
-            recordType: record.recordType,
-            data: JSON.parse(decoder.decode(record.data)),
-          };
-          // Make the POST request
-          try {
-            const response = await fetch(apiUrl, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(requestData),
-            });
+          const data = JSON.parse(decoder.decode(record.data));
+          setMessage(data);
 
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            // Handle the response data here if needed
-          } catch (error) {
-            console.error('Error:', error);
+          // Send the tagid to the PCF control inside the iframe
+          const iframeElement = document.querySelector('iframe'); // Adjust the selector if needed
+          if (iframeElement && iframeElement.contentWindow) {
+            const dataToSend = { tagid: data };
+            iframeElement.contentWindow.postMessage(dataToSend, '*'); // Adjust the target origin as needed
           }
 
-          // Update the parent window's URL with the scanned message
-          if (window.opener) {
-            window.opener.postMessage({ message }, '*');
-          }
+          // ... [rest of the code remains unchanged]
           break;
         default:
           setMessage(record.recordType);
@@ -62,7 +44,7 @@ const Scan = () => {
 
           ndef.onreading = event => {
             console.log("NDEF message read.");
-            onReading(event);
+            onReading(event);  // Call the onReading function here
           };
         } catch (error) {
           console.error(`Error! Scan failed to start: ${error}.`);

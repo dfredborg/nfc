@@ -9,7 +9,7 @@ import { ActionsContext } from './contexts/context';
 
 function App() {
   const [actions, setActions] = useState(null);
-  const [iframeSrc, setIframeSrc] = useState(''); // State to store iframe URL
+  const [iframeSrc, setIframeSrc] = useState('https://apps.powerapps.com/play/5fc3b331-fa84-4c10-aa75-9cd2590ae54c?source=iframe'); // State to store iframe URL
   const { scan, write } = actions || {};
 
   const actionsValue = { actions, setActions };
@@ -85,7 +85,7 @@ function App() {
         frameBorder="0"
         src={iframeSrc}
         allowFullScreen
-        allow="geolocation; microphone; camera"        
+        allow="geolocation; microphone; camera"              
       ></iframe>
     </div>
   );
