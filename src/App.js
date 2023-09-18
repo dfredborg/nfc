@@ -26,6 +26,8 @@ function App() {
       console.log("Sending message to PCF:", JSON.stringify(sampleData));
 
       iframeElement.contentWindow.postMessage(sampleData, '*'); // Adjust the target origin as needed
+
+      console.log("Data Send:", JSON.stringify(sampleData));      
   } else {
       // Log an error if the iframe or its contentWindow is not accessible
       console.error("Unable to access the iframe's contentWindow.");
