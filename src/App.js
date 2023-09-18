@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import nfc from './nfc.svg';
 import './App.css';
 import Scan from './containers/Scan';
@@ -21,8 +21,15 @@ function App() {
     const iframeElement = document.querySelector('iframe');
     if (iframeElement && iframeElement.contentWindow) {
       const sampleData = { tagid: "SampleTagID12345" };
+
+      // Log the action and the data being sent using JSON.stringify
+      console.log("Sending message to PCF:", JSON.stringify(sampleData));
+
       iframeElement.contentWindow.postMessage(sampleData, '*'); // Adjust the target origin as needed
-    }
+  } else {
+      // Log an error if the iframe or its contentWindow is not accessible
+      console.error("Unable to access the iframe's contentWindow.");
+  }
   };
 
   // ... [rest of the code remains unchanged]
