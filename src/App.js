@@ -25,7 +25,7 @@ function App() {
       // Log the action and the data being sent using JSON.stringify
       console.log("Sending message to PCF:", JSON.stringify(sampleData));
 
-      iframeElement.contentWindow.postMessage(sampleData, '*'); // Adjust the target origin as needed
+      iframeElement.contentWindow.postMessage(JSON.stringify(sampleData), '*'); // Adjust the target origin as needed
 
       console.log("Data Send:", JSON.stringify(sampleData));      
   } else {
