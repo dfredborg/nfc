@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import nfc from './nfc.svg';
 import './App.css';
 import Scan from './containers/Scan';
@@ -7,7 +7,7 @@ import { ActionsContext } from './contexts/context';
 
 function App() {
   const [actions, setActions] = useState(null);
-  const [iframeSrc] = useState('https://apps.powerapps.com/play/5fc3b331-fa84-4c10-aa75-9cd2590ae54c?source=iframe'); // State to store iframe URL
+  const [iframeSrc] = useState('https://apps.powerapps.com/play/5fc3b331-fa84-4c10-aa75-9cd2590ae54c?source=iframe');
   const { scan, write } = actions || {};
 
   const actionsValue = { actions, setActions };
@@ -16,25 +16,30 @@ function App() {
     setActions({ ...actions });
   };
 
-  // Function to send a sample message to the PCF control inside the iframe
   const sendMessageToPCF = () => {
     const iframeElement = document.querySelector('iframe');
     if (iframeElement && iframeElement.contentWindow) {
       const sampleData = { tagid: "SampleTagID12345" };
-
-      // Log the action and the data being sent using JSON.stringify
       console.log("Sending message to PCF:", JSON.stringify(sampleData));
-
-      iframeElement.contentWindow.postMessage(JSON.stringify(sampleData), '*'); // Adjust the target origin as needed
-
-      console.log("Data Send:", JSON.stringify(sampleData));      
-  } else {
-      // Log an error if the iframe or its contentWindow is not accessible
+      iframeElement.contentWindow.postMessage(sampleData, '*');
+      console.log("Data Sent:", JSON.stringify(sampleData));      
+    } else {
       console.error("Unable to access the iframe's contentWindow.");
-  }
+    }
   };
 
-  // ... [rest of the code remains unchanged]
+  useEffect(() => {
+    const handleReceivedMessage = (event) => {
+      console.log("Received message:", event.data);
+      // Handle the received data as needed
+    };
+
+    window.addEventListener('message', handleReceivedMessage);
+
+    return () => {
+      window.removeEventListener('message', handleReceivedMessage);
+    };
+  }, []);
 
   return (
     <div className="App">      
@@ -47,8 +52,6 @@ function App() {
         <button onClick={() => onHandleAction({ scan: null, write: 'writing' })} className="btn">
           Write
         </button>
-        {/* Button to trigger the REST API call */}
-        {/* Button to send a sample message to the PCF control */}
         <button onClick={sendMessageToPCF} className="btn">
           Send Sample Data to PCF
         </button>
@@ -58,7 +61,6 @@ function App() {
         {write && <Write />}
       </ActionsContext.Provider>
      
-      {/* Add the iframe here */}
       <iframe
         title="PowerApps"
         width="100%"
